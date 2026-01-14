@@ -1,47 +1,93 @@
-
 import React from 'react';
-import AppLayout from '../components/Layout/AppLayout';
-import ContactForm from '../components/Support/ContactForm';
-import InfoCard from '../components/Dashboard/InfoCard';
-import { Box, Flex, Icon, Stack, Text, Heading } from '@chakra-ui/react';
-import { IoMdMail } from 'react-icons/io'; // Mail icon
-import { BsChatFill } from 'react-icons/bs'; // Chat icon
+import {
+    Box,
+    Heading,
+    Text,
+    Accordion,
+    AccordionItem,
+    AccordionButton,
+    AccordionPanel,
+    AccordionIcon,
+    FormControl,
+    FormLabel,
+    Input,
+    Textarea,
+    Button,
+    SimpleGrid,
+    Card,
+    CardBody
+} from '@chakra-ui/react';
 
-const Support = () => {
+export default function Support() {
     return (
-        <AppLayout>
-            <Flex gap={6} flexDirection={{ base: "column", xl: "row" }} mt={6}>
-                {/* Left Column: Info Text */}
-                <Stack spacing={10} flex={1}>
-                    <Box>
-                        <Icon as={IoMdMail} boxSize={6} color="brand.500" mb={4} />
-                        <Heading fontSize="3xl" mb={4}>Contact Us</Heading>
-                        <Text fontSize="md" color="gray.500">
-                            Have a question or just want to know more? Feel free to reach out to us.
-                        </Text>
-                    </Box>
+        <Box>
+            <Heading mb={6}>Help & Support</Heading>
 
-                    <Box>
-                        <Icon as={BsChatFill} boxSize={6} color="brand.500" mb={4} />
-                        <Heading fontSize="3xl" mb={4}>Live Chat</Heading>
-                        <Text fontSize="md" color="gray.500">
-                            Don't have time to wait for the answer? Chat with us now.
-                        </Text>
-                    </Box>
-                </Stack>
+            <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
+                <Box>
+                    <Heading size="md" mb={4}>Frequently Asked Questions</Heading>
+                    <Accordion allowToggle>
+                        <AccordionItem>
+                            <h2>
+                                <AccordionButton>
+                                    <Box flex="1" textAlign="left" fontWeight="medium">
+                                        How do I verify my account?
+                                    </Box>
+                                    <AccordionIcon />
+                                </AccordionButton>
+                            </h2>
+                            <AccordionPanel pb={4} color="gray.400">
+                    Go to Settings > Verification and upload your ID document. Review takes 24-48 hours.
+                            </AccordionPanel>
+                        </AccordionItem>
 
-                {/* Right Column: Cards */}
-                <Stack spacing={6} flex={1}>
-                    <ContactForm />
-                    <InfoCard
-                        inverted={true}
-                        tagText="Chatbot"
-                        text="Chat with us now"
-                    />
-                </Stack>
-            </Flex>
-        </AppLayout>
+                        <AccordionItem>
+                            <h2>
+                                <AccordionButton>
+                                    <Box flex="1" textAlign="left" fontWeight="medium">
+                                        What are the withdrawal limits?
+                                    </Box>
+                                    <AccordionIcon />
+                                </AccordionButton>
+                            </h2>
+                            <AccordionPanel pb={4} color="gray.400">
+                                Standard accounts can withdraw up to 2 BTC per day. Verified Plus accounts have unlimited withdrawals.
+                            </AccordionPanel>
+                        </AccordionItem>
+
+                        <AccordionItem>
+                            <h2>
+                                <AccordionButton>
+                                    <Box flex="1" textAlign="left" fontWeight="medium">
+                                        How to secure my wallet?
+                                    </Box>
+                                    <AccordionIcon />
+                                </AccordionButton>
+                            </h2>
+                            <AccordionPanel pb={4} color="gray.400">
+                                Enable 2FA in Settings, never share your recovery phrase, and use a strong password.
+                            </AccordionPanel>
+                        </AccordionItem>
+                    </Accordion>
+                </Box>
+
+                <Box>
+                    <Heading size="md" mb={4}>Contact Us</Heading>
+                    <Card>
+                        <CardBody>
+                            <FormControl mb={4}>
+                                <FormLabel>Subject</FormLabel>
+                                <Input placeholder="Issue with transaction" />
+                            </FormControl>
+                            <FormControl mb={4}>
+                                <FormLabel>Message</FormLabel>
+                                <Textarea placeholder="Describe your issue..." />
+                            </FormControl>
+                            <Button colorScheme="brand">Submit Ticket</Button>
+                        </CardBody>
+                    </Card>
+                </Box>
+            </SimpleGrid>
+        </Box>
     );
-};
-
-export default Support;
+}

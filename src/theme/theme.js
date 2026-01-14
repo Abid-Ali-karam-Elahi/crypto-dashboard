@@ -1,49 +1,66 @@
 import { extendTheme } from "@chakra-ui/react";
+import "@fontsource/ubuntu";
+
+const config = {
+  initialColorMode: "dark",
+  useSystemColorMode: false,
+};
 
 const theme = extendTheme({
+  config,
   fonts: {
     heading: `'Ubuntu', sans-serif`,
     body: `'Ubuntu', sans-serif`,
   },
   colors: {
     brand: {
-      50: "#f0e5fc",
-      100: "#d1b3f6",
-      200: "#b280f1",
-      300: "#934deb",
-      400: "#741be6",
-      500: "#5f00d9", // Main purple from screenshot
-      600: "#4c00ad",
-      700: "#390082",
-      800: "#260056",
-      900: "#13002b",
+      50: "#e3f2fd",
+      100: "#bbdefb",
+      200: "#90caf9",
+      300: "#64b5f6",
+      400: "#42a5f5",
+      500: "#2196f3", // Primary Blue
+      600: "#1e88e5",
+      700: "#1976d2",
+      800: "#1565c0",
+      900: "#0d47a1",
     },
-    gray: {
-        50: "#f7f7f7", // Background color
+    bg: {
+      900: "#171923",
+      800: "#1A202C",
+      700: "#2D3748"
     }
   },
   styles: {
-    global: {
+    global: (props) => ({
       body: {
-        bg: "gray.50",
-        color: "gray.900",
+        bg: props.colorMode === "dark" ? "bg.900" : "gray.50",
+        color: props.colorMode === "dark" ? "whiteAlpha.900" : "gray.800",
       },
-    },
+    }),
   },
   components: {
     Button: {
-        baseStyle: {
-            fontWeight: "bold",
-            borderRadius: "10px",
-        },
+      baseStyle: {
+        fontWeight: "bold",
+        borderRadius: "xl",
+      },
+      variants: {
+        solid: (props) => ({
+          bg: props.colorScheme === "brand" ? "brand.500" : undefined,
+          _hover: {
+            bg: props.colorScheme === "brand" ? "brand.600" : undefined,
+          }
+        })
+      }
     },
     Card: {
-        baseStyle: {
-            container: {
-                borderRadius: "xl",
-                boxShadow: "sm",
-            }
+      baseStyle: {
+        container: {
+          borderRadius: "xl",
+          bg: "bg.800",
         }
+      }
     }
   },
 });

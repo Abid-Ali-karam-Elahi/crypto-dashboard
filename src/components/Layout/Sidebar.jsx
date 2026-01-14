@@ -1,61 +1,112 @@
-
 import React from 'react';
-import { Box, HStack, Heading, Icon, Text, VStack } from '@chakra-ui/react';
-import { RxDashboard } from 'react-icons/rx';
-import { TbArrowsDoubleNeSw } from 'react-icons/tb';
-import { BiSupport } from 'react-icons/bi';
-import { NavLink, useLocation } from 'react-router-dom';
+import {
+    Box,
+    Flex,
+    Icon,
+    useColorModeValue,
+    Link,
+    Text,
+    VStack,
+    Divider,
+} from '@chakra-ui/react';
+import { NavLink as RouterLink, useLocation } from 'react-router-dom';
+import {
+    FiHome,
+    FiTrendingUp,
+    FiPieChart,
+    FiDollarSign,
+    FiRefreshCw,
+    FiSettings,
+    FiHelpCircle,
+    FiLogOut
+} from 'react-icons/fi';
 
-const NavItem = ({ icon, text, to, onClose }) => {
+const LinkItems = [
+    { name: 'Dashboard', icon: FiHome, path: '/dashboard' },
+    { name: 'Market', icon: FiTrendingUp, path: '/market' },
+    { name: 'Portfolio', icon: FiPieChart, path: '/portfolio' },
+    { name: 'Transactions', icon: FiDollarSign, path: '/transactions' },
+    { name: 'Exchange', icon: FiRefreshCw, path: '/exchange' },
+    { name: 'Settings', icon: FiSettings, path: '/settings' },
+    { name: 'Support', icon: FiHelpCircle, path: '/support' },
+];
+
+const SidebarContent = ({ ...props }) => {
     const location = useLocation();
-    const isActive = location.pathname === to;
+    const bg = useColorModeValue('white', 'gray.900');
+    const borderColor = useColorModeValue('gray.200', 'gray.700');
 
-    return (
-        <NavLink to={to} onClick={onClose} style={{ textDecoration: 'none', width: '100%' }}>
-            <HStack
-                bg={isActive ? "gray.200" : "transparent"}
-                color={isActive ? "gray.900" : "gray.500"}
-                p={3}
-                borderRadius="md"
-                cursor="pointer"
-                _hover={{ bg: "gray.100", color: "gray.900" }}
-                transition="all 0.2s"
-            >
-                <Icon as={icon} boxSize={5} />
-                <Text fontSize="md" fontWeight="medium">{text}</Text>
-            </HStack>
-        </NavLink>
-    );
-}
-
-const Sidebar = ({ onClose }) => {
     return (
         <Box
-            bg="white"
-            boxShadow="sm"
-            w={{ base: "full", lg: "256px" }}
-            h="100vh"
-            flexDir="column"
-            justifyContent="space-between"
-            p={4}
-            display="flex"
+            transition="3s ease"
+            bg={bg}
+            borderRight="1px"
+            borderRightColor={borderColor}
+            w={{ base: 'full', md: 60 }}
+            pos="fixed"
+            h="full"
+            {...props}
         >
-            <Box>
-                <Heading fontSize="xl" color="brand.500" mb={8} px={3}>
-                    @DOSOMECODING
-                </Heading>
-
-                <VStack spacing={2} align="stretch">
-                    <NavItem icon={RxDashboard} text="Dashboard" to="/" onClose={onClose} />
-                    <NavItem icon={TbArrowsDoubleNeSw} text="Transactions" to="/transactions" onClose={onClose} />
-                </VStack>
-            </Box>
-
-            <Box>
-                <NavItem icon={BiSupport} text="Support" to="/support" onClose={onClose} />
-            </Box>
+            <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
+                <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
+                    CryptoApp
+                </Text>
+            </Flex>
+            <VStack spacing={1} align="stretch">
+                {LinkItems.map((link) => (
+                    <NavItem key={link.name} icon={link.icon} path={link.path} isActive={location.pathname === link.path}>
+                        {link.name}
+                    </NavItem>
+                ))}
+                <Divider my={4} />
+                <NavItem icon={FiLogOut} path="/" color="red.400">
+                    Sign Out
+                </NavItem>
+            </VStack>
         </Box>
     );
 };
 
-export default Sidebar;
+const NavItem = ({ icon, children, path, isActive, color, ...rest }) => {
+    const activeBg = useColorModeValue('brand.100', 'whiteAlpha.200');
+    const activeColor = useColorModeValue('brand.900', 'white');
+
+    return (
+        <Link
+            as={RouterLink}
+            to={path}
+            style={{ textDecoration: 'none' }}
+            _focus={{ boxShadow: 'none' }}
+        >
+            <Flex
+                align="center"
+                p="4"
+                mx="4"
+                borderRadius="lg"
+                role="group"
+                cursor="pointer"
+                bg={isActive ? activeBg : 'transparent'}
+                color={isActive ? activeColor : color || 'inherit'}
+                _hover={{
+                    bg: activeBg,
+                    color: activeColor,
+                }}
+                {...rest}
+            >
+                {icon && (
+                    <Icon
+                        mr="4"
+                        fontSize="16"
+                        _groupHover={{
+                            color: activeColor,
+                        }}
+                        as={icon}
+                    />
+                )}
+                {children}
+            </Flex>
+        </Link>
+    );
+};
+
+export default SidebarContent;
